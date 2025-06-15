@@ -60,7 +60,31 @@ func (ur *userRepo) GetUserById(userId string) (*models.GetUserRes, error) {
 }
 
 func (r *userRepo) UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error) {
-	return nil, nil
+	query := `
+                UPDATE
+                        users
+                SET
+                        user_name = $1,
+                        email = $2,
+                        avatar_url = $3,
+                        updated_at = NOW()
+                WHERE
+                        user_id = $4
+                RETURNING user_id, user_name, email, avatar_url
+        `
+
+	var res models.UpdateUserRes
+	err := r.db.QueryRow(query, req.UserName, req.Email, req.AvatarUrl, userId).Scan(
+		&res.UserId,
+		&res.UserName,
+		&res.Email,
+		&res.AvatarUrl,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
 }
 
 func (r *userRepo) IsUserExist(userId string) (bool, error) {
