@@ -149,18 +149,21 @@ func (uhr *userHobbyRepo) GetUserHobbiesByCategory(userId string) (map[string]st
 	Name  string
 	Count int
 }, error) {
-	query := `
+        query := `
         SELECT
-            h.category_id,
+            c.category_id,
+            c.category_name,
             COUNT(h.category_id) as hobby_count
         FROM
             user_hobbies uh
         JOIN
             hobbies h ON uh.hobby_id = h.hobby_id
+        JOIN
+            categories c ON h.category_id = c.category_id
         WHERE
             uh.user_id = $1
         GROUP BY
-            h.category_id;
+            c.category_id;
     `
 
 	rows, err := uhr.db.Query(query, userId)
