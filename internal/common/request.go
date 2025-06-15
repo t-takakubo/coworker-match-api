@@ -19,7 +19,7 @@ func ExtractPathParam(r *http.Request, paramName string) (string, error) {
 
 // ExtractUserIdFromContext コンテキストからユーザーIDを抽出し、バリデーションを行う
 func ExtractUserIdFromContext(r *http.Request) (string, error) {
-	key := UserIdKey
+        key := UserIDKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {
 		return "", errors.New("failed to get userId from context")

@@ -43,8 +43,8 @@ func Auth(next http.Handler) http.Handler {
 			return
 		}
 
-		// リクエストのコンテキストにユーザー情報を追加
-		key := common.UserIdKey
+                // リクエストのコンテキストにユーザー情報を追加
+                key := common.UserIDKey
 		ctx = context.WithValue(r.Context(), key, userId)
 		r = r.WithContext(ctx)
 
