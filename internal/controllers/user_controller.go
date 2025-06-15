@@ -66,12 +66,6 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var updates map[string]interface{}
-	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	user, err := uc.uu.UpdateUser(userId, &req)
 	if err != nil {
 		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
